@@ -40,10 +40,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
-    fun modifyData( v: View){
+    
+    fun modifyView( v: View){
         var intent : Intent = Intent (this, GameActivity::class.java)
         startActivity(intent)
     }
