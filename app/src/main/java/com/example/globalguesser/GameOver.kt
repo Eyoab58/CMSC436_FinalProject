@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 
 class GameOver : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // when timer is done
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_over)
-
     }
 
     fun modifyView( v: View){

@@ -12,7 +12,7 @@ import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var difficultyLevel: String;
+//    private lateinit var difficultyLevel: String // put this in companion object so that model can access
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -42,7 +42,21 @@ class MainActivity : AppCompatActivity() {
     }
     
     fun modifyView( v: View){
+        // when "play" is clicked
         var intent : Intent = Intent (this, GameActivity::class.java)
         startActivity(intent)
+    }
+
+    companion object {
+        // difficulty level - accessible to Game.kt
+        lateinit var difficultyLevel : String
+
+        // map of flags to name - accessible to Game.kt
+        // first string is the image id (from view), second string is the correct country name
+
+        val easyFlags = HashMap<String, String>()
+        // easyFlags["us_flag"] = "United States of America"
+        val mediumFlags = HashMap<String, String>()
+        val hardFlags = HashMap<String, String>()
     }
 }
