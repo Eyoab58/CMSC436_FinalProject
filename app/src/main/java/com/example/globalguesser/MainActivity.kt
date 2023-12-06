@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val spinnerId = findViewById<Spinner>(R.id.difficulty)
-        val playButtonID = findViewById<Button>(R.id.play)
         val difficulty  = arrayOf("Easy" ,"Medium","Hard")
         val arrayadp = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_item, difficulty)
         spinnerId.adapter = arrayadp
