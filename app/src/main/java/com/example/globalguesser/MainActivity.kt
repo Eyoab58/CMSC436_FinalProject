@@ -1,6 +1,7 @@
 package com.example.globalguesser
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -9,14 +10,36 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.graphics.drawable.toDrawable
 
 class MainActivity : AppCompatActivity() {
 
-//    private lateinit var difficultyLevel: String // put this in companion object so that model can access
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // store list of easy flags
+        easyFlags["australia"] = R.drawable.australia
+        easyFlags["india"] = R.drawable.india
+        easyFlags["france"] = R.drawable.france
+        easyFlags["croatia"] = R.drawable.croatia
+        easyFlags["new zealand"] = R.drawable.new_zealand
+
+        // store list of medium flags
+        mediumFlags["ghana"] = R.drawable.ghana
+        mediumFlags["georgia"] = R.drawable.georgia
+        mediumFlags["egypt"] = R.drawable.egypt
+        mediumFlags["ethiopia"] = R.drawable.ethiopia
+        mediumFlags["bangladesh"] = R.drawable.bangladesh
+
+        // store list of hard flags
+        hardFlags["azerbaijan"] = R.drawable.azerbaijan
+        hardFlags["gabon"] = R.drawable.gabon
+        hardFlags["kazakhstan"] = R.drawable.kazakhstan
+        hardFlags["guinea"] = R.drawable.guinea
+        hardFlags["ivory coast"] = R.drawable.c_te_d_ivoire
+
+        // set up difficulty level selector
         val spinnerId = findViewById<Spinner>(R.id.difficulty)
         val difficulty  = arrayOf("Easy" ,"Medium","Hard")
         val arrayadp = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_item, difficulty)
@@ -39,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    
+
     fun modifyView( v: View){
         // when "play" is clicked
         var intent : Intent = Intent (this, GameActivity::class.java)
@@ -50,12 +73,9 @@ class MainActivity : AppCompatActivity() {
         // difficulty level - accessible to Game.kt
         lateinit var difficultyLevel : String
 
-        // map of flags to name - accessible to Game.kt
-        // first string is the image id (from view), second string is the correct country name
-
-        val easyFlags = HashMap<String, String>()
-        // easyFlags["us_flag"] = "United States of America"
-        val mediumFlags = HashMap<String, String>()
-        val hardFlags = HashMap<String, String>()
+        // list of flags in categories of difficulty
+        var easyFlags = HashMap<String, Int>()
+        var mediumFlags = HashMap<String, Int>()
+        var hardFlags = HashMap<String, Int>()
     }
 }
