@@ -2,87 +2,57 @@ package com.example.globalguesser
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 
 class Game {
     //model
 
-    private var difficulty : String = MainActivity.difficultyLevel
-
-    // maps of correct pairs
-    private val easyFlags = MainActivity.easyFlags
-    private val mediumFlags = MainActivity.mediumFlags
-    private val hardFlags = MainActivity.hardFlags
-
     // for game screen
-    private var flagId : String
-    private var guess : String
+    private lateinit var currFlag : String
 
     // for game over screen
     private var numFlagsGuessed : Int = 0 // counts num of flags guessed so far (for progress bar)
     private var currentTime : Long = 1 // pull from GameActivity
     private var bestTime : Long = 0 // pull from sharedPreferences
 
-    constructor(context : Context, difficulty : String, flagId: String, guess : String){
+    constructor(currFlag : String, bestTime : Long){
         // pull from view
-        this.difficulty = difficulty
-        this.flagId = flagId
-        this.guess = guess
-
-        // code for persistent data: bestTime
+        this.currFlag = currFlag
+        this.bestTime = bestTime
     }
 
     fun getCurrentTime() : Long {
         return currentTime
     }
 
+
     fun getBestTime() : Long {
         return bestTime
-    }
-
-    fun getFlagId() : String {
-        return flagId
-    }
-
-    fun getGuess() : String {
-        return guess
     }
 
     fun getNumFlagsGuessed() : Int {
         return numFlagsGuessed
     }
 
+    fun setCurrentTime(curTime : Long) {
+        currentTime = curTime
+    }
+
+    fun setCurrFlag(currFlag : String) {
+        this.currFlag = currFlag
+    }
+
     // check whether the guess matches the flag
-    fun isGuessCorrect() : Boolean {
+    fun isGuessCorrect(guess : String) : Boolean {
         // process guess
         var guessProcessed = guess.lowercase().trim()
-
-        if(difficulty == "Easy"){
-            if(guess == easyFlags.getValue(flagId)){
-                //correct (controller updates view to next flag & clears editText)
-                updateNumFlagsGuessed()
-                return true
-            } else {
-                //incorrect (controller clears editText for re-guess)
-                return false
-            }
-        } else if(difficulty == "Medium") {
-            if(guess == mediumFlags.getValue(flagId)){
-                //correct (controller updates view to next flag & clears editText)
-                updateNumFlagsGuessed()
-                return true
-            } else {
-                //incorrect (controller clears editText for re-guess)
-                return false
-            }
+        return if(guessProcessed == currFlag){
+            //correct (controller updates view to next flag & clears editText)
+            updateNumFlagsGuessed()
+            true
         } else {
-            if(guess == hardFlags.getValue(flagId)){
-                //correct (controller updates view to next flag & clears editText)
-                updateNumFlagsGuessed()
-                return true
-            } else {
-                //incorrect (controller clears editText for re-guess)
-                return false
-            }
+            //incorrect (controller clears editText for re-guess)
+            false
         }
     }
 
