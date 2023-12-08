@@ -10,6 +10,7 @@ import android.text.Editable
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,8 @@ class GameActivity : AppCompatActivity() {
     // variables for the timer
     private lateinit var countdownText:TextView
     private lateinit var countDownTimer:CountDownTimer
+    private lateinit var progressBar:ProgressBar;
+    private var currentProgress:Int = 0;
     private var timeLeftInMilliseconds:Long = 60000
 
     // list of flags
@@ -34,6 +37,10 @@ class GameActivity : AppCompatActivity() {
         // timer
         countdownText = findViewById(R.id.timer)
         startTimer()
+
+        // set progress bar
+        progressBar = findViewById(R.id.progress_bar)
+        progressBar.max = 5;
 
         // views
         flagImage = findViewById(R.id.flag_image)
@@ -94,11 +101,15 @@ class GameActivity : AppCompatActivity() {
         }.start()
     }
 
-    // check if answer is correct when ENTER is clicked
+    // check if answer is correct when ENTER is clicked and update the progress bar
     fun checkAnswer(v : View) {
         if(game.isGuessCorrect(flagText.text.toString())) {
             flagText.setText("")
             flags.removeAt(currFlagIndex)
+
+            //Updating the progress bar
+            currentProgress = ++currentProgress
+            progressBar.progress = currentProgress
 
             if (flags.isEmpty() || flags.size < 1)
                 modifyData()
