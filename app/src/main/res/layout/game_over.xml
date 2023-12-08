@@ -78,12 +78,27 @@
         app:layout_constraintTop_toTopOf="@+id/best_time_label" />
 
     <Button
-        android:id="@+id/play_again"
+        android:id="@+id/send_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="200dp"
+        android:text="SEND RESULTS"
+        android:textSize="30dp"
+        android:backgroundTint="#36ba57"
+        android:onClick="sendEmail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <Button
+        android:id="@+id/play_again"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
         android:text="PLAY AGAIN"
         android:textSize="30dp"
+        android:backgroundTint="#3254a8"
         android:onClick="modifyView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

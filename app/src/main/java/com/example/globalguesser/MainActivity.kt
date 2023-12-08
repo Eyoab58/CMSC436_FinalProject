@@ -8,11 +8,14 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var logo : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +41,10 @@ class MainActivity : AppCompatActivity() {
         hardFlags["kazakhstan"] = R.drawable.kazakhstan
         hardFlags["guinea"] = R.drawable.guinea
         hardFlags["ivory coast"] = R.drawable.c_te_d_ivoire
+
+        // display logo
+        logo = findViewById(R.id.globe_logo);
+        logo.setImageResource(R.drawable.globe_logo);
 
         // set up difficulty level selector
         val spinnerId = findViewById<Spinner>(R.id.difficulty)
