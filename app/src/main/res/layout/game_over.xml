@@ -77,15 +77,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/best_time_label" />
 
+    <!-- Button to send challenge to friends - only when beat high score -->
     <Button
         android:id="@+id/send_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="200dp"
-        android:text="SEND RESULTS"
+        android:text="CHALLENGE YOUR FRIENDS"
         android:textSize="30dp"
         android:backgroundTint="#36ba57"
         android:onClick="sendEmail"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

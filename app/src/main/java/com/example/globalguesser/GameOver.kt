@@ -2,6 +2,7 @@ package com.example.globalguesser
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -16,6 +17,9 @@ class GameOver : AppCompatActivity() {
     // data from the game
     private lateinit var game : Game
     private lateinit var sharedPreferences : SharedPreferences
+
+    // challenge button
+    private lateinit var challengeButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // when timer is done
@@ -32,20 +36,53 @@ class GameOver : AppCompatActivity() {
         currTimeTV = findViewById(R.id.finished_time)
         bestTimeTV = findViewById(R.id.best_time)
 
+        challengeButton = findViewById(R.id.send_email)
+
         // show the user the current time
         if(score == 5)
-            currTimeTV.text = "" + currTime + "secs"
+            currTimeTV.text = "" + currTime + " secs"
         else
             currTimeTV.text = "Ran out of time!!"
 
         // show the user the best time
         if(score == 5 && currTime < bestTime) {
-            bestTimeTV.text = "" + currTime + "secs"
+            // new best time
+
+            // show challenge button
+            challengeButton.visibility = View.VISIBLE
+
+            // display time
+            bestTimeTV.text = "" + currTime + " secs"
             sharedPreferences.edit().putLong("bestTime", currTime).commit()
-        } else if(bestTime == 100L)
+        } else if(bestTime == 100L) {
             bestTimeTV.text = "None"
-        else
-            bestTimeTV.text = "" + bestTime + "secs"
+
+            challengeButton.visibility = View.INVISIBLE
+        } else {
+            bestTimeTV.text = "" + bestTime + " secs"
+
+            challengeButton.visibility = View.INVISIBLE
+        }
+    }
+
+    // Send email of results
+    fun sendEmail(v : View){
+        var high_score_message : String =
+                "🌍 Challenge Alert! 🚩" +
+                "\n\nThink you know your flags? " +
+                "Test your skills in the Globe Guesser game! 🏁" +
+                "\n\nGuess the country based on its flag and climb the leaderboard! 📈💪 " +
+                "\n\nCan you beat my best time of ${game.getBestTime()} seconds? 🤔🌐" +
+                "\n\nJoin the fun now: [Game Link] #GlobeGuesserChallenge"
+
+        var emailIntent : Intent = Intent(Intent.ACTION_SENDTO)
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[GLOBE GUESSER] Can you beat my time?!")
+        emailIntent.putExtra(Intent.EXTRA_TEXT, high_score_message)
+        emailIntent.setData(Uri.parse("mailto:"))
+
+        // so when the user returns, the game appears
+        emailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(emailIntent)
     }
 
     // Go back to the home screen when user clicks play again
