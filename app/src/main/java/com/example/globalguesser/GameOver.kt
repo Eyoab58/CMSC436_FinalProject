@@ -2,6 +2,8 @@ package com.example.globalguesser
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -53,13 +55,18 @@ class GameOver : AppCompatActivity() {
 
             // display time
             bestTimeTV.text = "" + currTime + " secs"
+            bestTimeTV.setTextColor(Color.parseColor("#36ba57"))
+            bestTimeTV.setTypeface(null, Typeface.BOLD);
+
             sharedPreferences.edit().putLong("bestTime", currTime).commit()
         } else if(bestTime == 100L) {
             bestTimeTV.text = "None"
+            bestTimeTV.setTextColor(Color.BLACK)
 
             challengeButton.visibility = View.INVISIBLE
         } else {
             bestTimeTV.text = "" + bestTime + " secs"
+            bestTimeTV.setTextColor(Color.BLACK)
 
             challengeButton.visibility = View.INVISIBLE
         }
