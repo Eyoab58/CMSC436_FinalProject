@@ -10,17 +10,22 @@ import android.text.Editable
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 
 class GameActivity : AppCompatActivity() {
     // variables for the timer
     private lateinit var countdownText:TextView
     private lateinit var countDownTimer:CountDownTimer
-    private lateinit var progressBar:ProgressBar;
-    private var currentProgress:Int = 0;
+    private lateinit var progressBar: ProgressBar
+    private var currentProgress:Int = 0
     private var timeLeftInMilliseconds:Long = 60000
 
     // list of flags
@@ -29,6 +34,7 @@ class GameActivity : AppCompatActivity() {
 
     private lateinit var flagImage : ImageView
     private lateinit var flagText : EditText
+    private lateinit var adView : AdView
     private var currFlagIndex : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +46,7 @@ class GameActivity : AppCompatActivity() {
 
         // set progress bar
         progressBar = findViewById(R.id.progress_bar)
-        progressBar.max = 5;
+        progressBar.max = 5
 
         // views
         flagImage = findViewById(R.id.flag_image)
@@ -71,20 +77,52 @@ class GameActivity : AppCompatActivity() {
         flagMap[flags[0]]?.let { flagImage.setBackgroundResource(it) }
         // initialize game variable
         game = Game(flags[0], sharedPreferences.getLong("bestTime", 100))
+
+        createAd()
     }
 
     override fun onPause() {
         super.onPause()
         stopTimer()
+        if( adView != null )
+            adView.pause()
     }
 
     override fun onStop() {
         super.onStop()
         stopTimer()
+        if( adView != null )
+            adView.resume()
+    }
+
+    override fun onDestroy() {
+        if( adView != null )
+            adView.destroy()
+        super.onDestroy()
     }
 
     private fun stopTimer() {
         countDownTimer?.cancel()
+    }
+
+    private fun createAd( ) {
+        adView = AdView( this )
+        var adSize : AdSize = AdSize( AdSize.FULL_WIDTH, AdSize.AUTO_HEIGHT )
+        adView.setAdSize( adSize )
+
+        var adUnitId : String = "ca-app-pub-3940256099942544/6300978111"
+        adView.adUnitId = adUnitId
+
+        var builder : AdRequest.Builder = AdRequest.Builder( )
+        builder.addKeyword( "learning" ).addKeyword( "games" )
+        var request : AdRequest = builder.build()
+
+        // add adView to linear layout
+        var layout : LinearLayout = findViewById( R.id.ad_view )
+        layout.addView( adView )
+
+        // load the ad
+        adView.loadAd( request )
     }
 
     private fun startTimer() {
@@ -101,7 +139,7 @@ class GameActivity : AppCompatActivity() {
         }.start()
     }
 
-    // check if answer is correct when ENTER is clicked and update the progress bar
+    // check if answer is correct when ENTER is clicked
     fun checkAnswer(v : View) {
         if(game.isGuessCorrect(flagText.text.toString())) {
             flagText.setText("")
