@@ -70,10 +70,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // when "play" is clicked
     fun modifyView( v: View){
-        // when "play" is clicked
         var intent : Intent = Intent (this, GameActivity::class.java)
-        startActivity(intent)
+        // transition from home screen to game screen
+        val options = ActivityOptions.makeCustomAnimation(
+            this,
+            R.anim.slide_up_enter,
+            R.anim.slide_up_exit
+        )
+        startActivity(intent, options.toBundle())
     }
 
     companion object {
