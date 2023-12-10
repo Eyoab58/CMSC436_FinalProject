@@ -81,13 +81,9 @@ class GameActivity : AppCompatActivity() {
         game = Game(flags[0], sharedPreferences.getLong("bestTime", 100))
 
         // allow clicking "enter" on keyboard to submit
-//        var guess : EditText = findViewById(R.id.flag_text)
         flagText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
            if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN){
                // same as pressing enter button
-//               var enterButton : Button = findViewById(R.id.ENTER)
-//               checkAnswer(enterButton)
-
                checkAnswer(v)
                return@OnKeyListener true
            } else {
