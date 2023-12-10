@@ -58,7 +58,9 @@ class GameOver : AppCompatActivity() {
             bestTimeTV.setTextColor(Color.parseColor("#36ba57"))
             bestTimeTV.setTypeface(null, Typeface.BOLD);
 
-            sharedPreferences.edit().putLong("bestTime", currTime).commit()
+            // update best time
+            game.setBestTime(currTime) // in model
+            sharedPreferences.edit().putLong("bestTime", currTime).commit() // in persistent data
         } else if(bestTime == 100L) {
             bestTimeTV.text = "None"
             bestTimeTV.setTextColor(Color.BLACK)
@@ -80,7 +82,7 @@ class GameOver : AppCompatActivity() {
                     "Test your skills in the Globe Guesser game! 🏁" +
                     "\n\nGuess the country based on its flag and climb the leaderboard! 📈💪 " +
                     "\n\nCan you beat my best time of ${game.getBestTime()} seconds? 🤔🌐" +
-                    "\n\nJoin the fun now: [Game Link] #GlobeGuesserChallenge"
+                    "\n\nJoin the fun now! #GlobeGuesserChallenge"
 
         var emailIntent : Intent = Intent(Intent.ACTION_SENDTO)
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[GLOBE GUESSER] Can you beat my time?!")

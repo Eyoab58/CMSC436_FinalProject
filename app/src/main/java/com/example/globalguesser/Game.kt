@@ -25,6 +25,9 @@ class Game {
         return currentTime
     }
 
+    fun setBestTime( newTime : Long) : Unit {
+        bestTime = newTime
+    }
 
     fun getBestTime() : Long {
         return bestTime

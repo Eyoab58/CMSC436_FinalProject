@@ -7,7 +7,9 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
+import android.view.KeyEvent
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -40,9 +42,9 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_view)
-        // timer
-        countdownText = findViewById(R.id.timer)
-        startTimer()
+
+        // advertisement
+        createAd()
 
         // set progress bar
         progressBar = findViewById(R.id.progress_bar)
@@ -78,7 +80,26 @@ class GameActivity : AppCompatActivity() {
         // initialize game variable
         game = Game(flags[0], sharedPreferences.getLong("bestTime", 100))
 
-        createAd()
+        // allow clicking "enter" on keyboard to submit
+//        var guess : EditText = findViewById(R.id.flag_text)
+        flagText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+           if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN){
+               // same as pressing enter button
+//               var enterButton : Button = findViewById(R.id.ENTER)
+//               checkAnswer(enterButton)
+
+               checkAnswer(v)
+               return@OnKeyListener true
+           } else {
+               return@OnKeyListener false
+           }
+
+
+        })
+
+        // timer
+        countdownText = findViewById(R.id.timer)
+        startTimer()
     }
 
     override fun onPause() {
