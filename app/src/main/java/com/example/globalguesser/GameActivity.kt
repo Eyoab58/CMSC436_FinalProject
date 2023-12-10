@@ -211,9 +211,15 @@ class GameActivity : AppCompatActivity() {
         // store how long it took to finish this round
         game.setCurrentTime(60 - (timeLeftInMilliseconds / 1000))
 
-        // jump to game over screen
+        // jump to game over screen with transition
         val intent : Intent = Intent (this, GameOver::class.java)
-        startActivity(intent)
+
+        val options = ActivityOptions.makeCustomAnimation(
+            this,
+            R.anim.fade_in,
+            R.anim.fade_out
+        )
+        startActivity(intent, options.toBundle())
     }
 
     companion object {
