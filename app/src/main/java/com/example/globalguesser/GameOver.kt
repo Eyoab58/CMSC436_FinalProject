@@ -75,12 +75,12 @@ class GameOver : AppCompatActivity() {
     // Send email of results
     fun sendEmail(v : View){
         var high_score_message : String =
-                "🌍 Challenge Alert! 🚩" +
-                "\n\nThink you know your flags? " +
-                "Test your skills in the Globe Guesser game! 🏁" +
-                "\n\nGuess the country based on its flag and climb the leaderboard! 📈💪 " +
-                "\n\nCan you beat my best time of ${game.getBestTime()} seconds? 🤔🌐" +
-                "\n\nJoin the fun now: [Game Link] #GlobeGuesserChallenge"
+            "🌍 Challenge Alert! 🚩" +
+                    "\n\nThink you know your flags? " +
+                    "Test your skills in the Globe Guesser game! 🏁" +
+                    "\n\nGuess the country based on its flag and climb the leaderboard! 📈💪 " +
+                    "\n\nCan you beat my best time of ${game.getBestTime()} seconds? 🤔🌐" +
+                    "\n\nJoin the fun now: [Game Link] #GlobeGuesserChallenge"
 
         var emailIntent : Intent = Intent(Intent.ACTION_SENDTO)
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[GLOBE GUESSER] Can you beat my time?!")
