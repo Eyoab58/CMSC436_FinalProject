@@ -1,5 +1,6 @@
 package com.example.globalguesser
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -89,8 +90,6 @@ class GameActivity : AppCompatActivity() {
            } else {
                return@OnKeyListener false
            }
-
-
         })
 
         // timer

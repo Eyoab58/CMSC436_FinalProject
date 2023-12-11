@@ -1,17 +1,15 @@
 package com.example.globalguesser
 
+import android.app.ActivityOptions
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.core.graphics.drawable.toDrawable
 
 class MainActivity : AppCompatActivity() {
 
@@ -73,6 +71,7 @@ class MainActivity : AppCompatActivity() {
     // when "play" is clicked
     fun modifyView( v: View){
         var intent : Intent = Intent (this, GameActivity::class.java)
+
         // transition from home screen to game screen
         val options = ActivityOptions.makeCustomAnimation(
             this,
