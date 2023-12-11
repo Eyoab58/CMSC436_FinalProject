@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
@@ -25,11 +26,11 @@ import com.google.android.gms.ads.AdView
 
 class GameActivity : AppCompatActivity() {
     // variables for the timer
-    private lateinit var countdownText:TextView
-    private lateinit var countDownTimer:CountDownTimer
-    private lateinit var progressBar: ProgressBar
-    private var currentProgress:Int = 0
-    private var timeLeftInMilliseconds:Long = 60000
+    private lateinit var countdownText : TextView
+    private lateinit var countDownTimer : CountDownTimer
+    private lateinit var progressBar : ProgressBar
+    private var currentProgress : Int = 0
+    private var timeLeftInMilliseconds : Long = 61000 // to offset the transitions
 
     // list of flags
     private lateinit var flagMap : HashMap<String, Int>
@@ -39,6 +40,8 @@ class GameActivity : AppCompatActivity() {
     private lateinit var flagText : EditText
     private lateinit var adView : AdView
     private var currFlagIndex : Int = 0
+
+    private var difficultyLabel : String = MainActivity.difficultyLevel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,26 +63,25 @@ class GameActivity : AppCompatActivity() {
 
         // get the right flags based on difficulty level
         flagMap = when (MainActivity.difficultyLevel) {
-            "Easy" -> {
-                MainActivity.easyFlags
-            }
-
-            "Medium" -> {
-                MainActivity.mediumFlags
-            }
-
-            else -> {
-                MainActivity.hardFlags
-            }
+            "Easy" -> MainActivity.easyFlags
+            "Medium" -> MainActivity.mediumFlags
+            else -> MainActivity.hardFlags
         }
+
+        // add all flags to the queue of flags to guess
         for(e in flagMap.keys) {
             flags.add(e)
         }
 
         // set the first flag
         flagMap[flags[0]]?.let { flagImage.setBackgroundResource(it) }
+
         // initialize game variable
-        game = Game(flags[0], sharedPreferences.getLong("bestTime", 100))
+        game = when (difficultyLabel) {
+            "Easy" -> Game(flags[0], sharedPreferences.getLong("bestTimeEasy", 100), difficultyLabel)
+            "Medium" -> Game(flags[0], sharedPreferences.getLong("bestTimeMedium", 100), difficultyLabel)
+            else -> Game(flags[0], sharedPreferences.getLong("bestTimeHard", 100), difficultyLabel)
+        }
 
         // allow clicking "enter" on keyboard to submit
         flagText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
@@ -168,6 +170,7 @@ class GameActivity : AppCompatActivity() {
             if (flags.isEmpty() || flags.size < 1)
                 modifyData()
             else if (currFlagIndex > flags.size - 1) {
+                currFlagIndex = 0
                 game.setCurrFlag(flags[currFlagIndex])
                 flagMap[flags[currFlagIndex]]?.let { flagImage.setBackgroundResource(it) }
             } else {
@@ -187,6 +190,7 @@ class GameActivity : AppCompatActivity() {
         } else if(flags.size == 1) {
             Toast.makeText(this, "Last Remaining Flag", Toast.LENGTH_LONG).show()
         } else if(currFlagIndex == flags.size - 1) {
+            // loop back
             currFlagIndex = 0
             game.setCurrFlag(flags[currFlagIndex])
             flagMap[flags[currFlagIndex]]?.let { flagImage.setBackgroundResource(it) }

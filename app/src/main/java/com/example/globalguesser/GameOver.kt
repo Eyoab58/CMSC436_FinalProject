@@ -19,6 +19,7 @@ class GameOver : AppCompatActivity() {
     // data from the game
     private lateinit var game : Game
     private lateinit var sharedPreferences : SharedPreferences
+    private var difficultyLabel : String = MainActivity.difficultyLevel
 
     // challenge button
     private lateinit var challengeButton : Button
@@ -32,8 +33,13 @@ class GameOver : AppCompatActivity() {
         sharedPreferences = GameActivity.sharedPreferences
 
         var score : Int = game.getNumFlagsGuessed()
-        var bestTime : Long = game.getBestTime()
         var currTime : Long = game.getCurrentTime()
+
+        var bestTime : Long = when (difficultyLabel){
+            "Easy" -> game.getBestTimeEasy()
+            "Medium" -> game.getBestTimeMedium()
+            else -> game.getBestTimeHard()
+        }
 
         currTimeTV = findViewById(R.id.finished_time)
         bestTimeTV = findViewById(R.id.best_time)
@@ -54,20 +60,35 @@ class GameOver : AppCompatActivity() {
             challengeButton.visibility = View.VISIBLE
 
             // display time
-            bestTimeTV.text = "" + currTime + " secs"
+            bestTimeTV.text = "[" + difficultyLabel + "] " + currTime + " secs"
             bestTimeTV.setTextColor(Color.parseColor("#36ba57"))
             bestTimeTV.setTypeface(null, Typeface.BOLD);
 
             // update best time
-            game.setBestTime(currTime) // in model
-            sharedPreferences.edit().putLong("bestTime", currTime).commit() // in persistent data
+            when (difficultyLabel){
+                "Easy" -> {
+                    game.setBestTimeEasy(currTime)
+                    sharedPreferences.edit().putLong("bestTimeEasy", currTime).commit() // in persistent data
+                }
+
+                "Medium" -> {
+                    game.setBestTimeMedium(currTime)
+                    sharedPreferences.edit().putLong("bestTimeMedium", currTime).commit() // in persistent data
+                }
+
+                else -> {
+                    game.setBestTimeHard(currTime)
+                    sharedPreferences.edit().putLong("bestTimeHard", currTime).commit() // in persistent data
+                }
+            }
+
         } else if(bestTime == 100L) {
             bestTimeTV.text = "None"
             bestTimeTV.setTextColor(Color.BLACK)
 
             challengeButton.visibility = View.INVISIBLE
         } else {
-            bestTimeTV.text = "" + bestTime + " secs"
+            bestTimeTV.text = "[" + difficultyLabel + "] " + bestTime + " secs"
             bestTimeTV.setTextColor(Color.BLACK)
 
             challengeButton.visibility = View.INVISIBLE
@@ -76,13 +97,20 @@ class GameOver : AppCompatActivity() {
 
     // Send email of results
     fun sendEmail(v : View){
+
+        var bestTime = when (difficultyLabel){
+            "Easy" -> game.getBestTimeEasy()
+            "Medium" -> game.getBestTimeMedium()
+            else -> game.getBestTimeHard()
+        }
+
         var high_score_message : String =
             "🌍 Challenge Alert! 🚩" +
-                    "\n\nThink you know your flags? " +
-                    "Test your skills in the Globe Guesser game! 🏁" +
-                    "\n\nGuess the country based on its flag and climb the leaderboard! 📈💪 " +
-                    "\n\nCan you beat my best time of ${game.getBestTime()} seconds? 🤔🌐" +
-                    "\n\nJoin the fun now! #GlobeGuesserChallenge"
+            "\n\nThink you know your flags? " +
+            "Test your skills in the Globe Guesser game! 🏁" +
+            "\n\nGuess the country based on its flag and climb the leaderboard! 📈💪 " +
+            "\n\nCan you beat my best time of $bestTime seconds on the ${difficultyLabel.lowercase()} level? 🤔🌐" +
+            "\n\nJoin the fun now! #GlobeGuesserChallenge"
 
         var emailIntent : Intent = Intent(Intent.ACTION_SENDTO)
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[GLOBE GUESSER] Can you beat my time?!")

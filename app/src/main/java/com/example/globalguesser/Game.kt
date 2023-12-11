@@ -13,24 +13,45 @@ class Game {
     // for game over screen
     private var numFlagsGuessed : Int = 0 // counts num of flags guessed so far (for progress bar)
     private var currentTime : Long = 1 // pull from GameActivity
-    private var bestTime : Long = 0 // pull from sharedPreferences
+    private var bestTimeEasy : Long = 0 // pull from sharedPreferences
+    private var bestTimeMedium : Long = 0 // pull from sharedPreferences
+    private var bestTimeHard : Long = 0 // pull from sharedPreferences
 
-    constructor(currFlag : String, bestTime : Long){
+    constructor(currFlag : String, bestTime : Long, difficulty : String){
         // pull from view
         this.currFlag = currFlag
-        this.bestTime = bestTime
+
+        if(difficulty == "Easy"){
+            bestTimeEasy = bestTime
+        } else if(difficulty == "Medium"){
+            bestTimeMedium = bestTime
+        } else {
+            bestTimeHard = bestTime
+        }
     }
 
     fun getCurrentTime() : Long {
         return currentTime
     }
 
-    fun setBestTime( newTime : Long) : Unit {
-        bestTime = newTime
+    fun setBestTimeEasy( newTime : Long) : Unit {
+        bestTimeEasy = newTime
+    }
+    fun setBestTimeMedium( newTime : Long) : Unit {
+        bestTimeMedium = newTime
+    }
+    fun setBestTimeHard( newTime : Long) : Unit {
+        bestTimeHard = newTime
     }
 
-    fun getBestTime() : Long {
-        return bestTime
+    fun getBestTimeEasy() : Long {
+        return bestTimeEasy
+    }
+    fun getBestTimeMedium() : Long {
+        return bestTimeMedium
+    }
+    fun getBestTimeHard() : Long {
+        return bestTimeHard
     }
 
     fun getNumFlagsGuessed() : Int {
